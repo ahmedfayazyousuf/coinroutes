@@ -1,0 +1,185 @@
+html, body{
+    margin: 0;
+    padding: 0;
+}
+p{
+    padding: 0;
+    margin: 0;
+}
+
+/* Scrollbar  */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* TEXT HIGHLIGHT  */
+::selection {
+    background: #6bf04a;
+    color: #000;
+}
+
+/* Button */
+.theme-button {
+    background: #6bf04a;
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    white-space: nowrap; /* Prevents text wrapping */
+    margin-right: 10px;
+    border: 1px solid #6bf04a;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  
+  .theme-button:hover {
+    background: transparent;
+    color: #6bf04a;
+  }
+
+
+/* FONT  */
+@font-face{
+    font-family: myFont;
+    src:url(Garet-Book.otf);
+}
+*{
+    font-family: myFont;
+}
+@font-face{
+    font-family: myFontBold;
+    src:url(GothamOffice-Bold.otf);
+}
+
+h1, .fontSpecial{
+    font-family: myFontBold;
+    font-weight: 300;
+}   
+
+/* HOME PAGE CSS  */
+.hero-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.parent-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.child-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 60%;
+}
+
+.text-child-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 50%;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.child-right {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: 40%;
+}
+
+.text-child-left h1 {
+    font-size: 45px;
+}
+
+@keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  .floatingImage {
+    width: 60%;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .rotateImage {
+    width: 20%;
+    animation: rotate 30s linear infinite;
+    position: fixed;
+    z-index: 0;
+    margin-top: -150px;
+    margin-right: 50px;
+  }
+
+  @keyframes floattech {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .techImage {
+    width: 20%;
+    animation: floattech 6s ease-in-out infinite;
+    position: fixed;
+    z-index: 0;
+    margin-top: 200px;
+  }
+
+
+@media (max-width: 1000px) {
+    .parent-div {
+        height: 100%;
+        margin-top: 150px;
+        flex-direction: column;
+        width: 100vw;
+    }
+    .child-left {
+        width: 100%;
+    }
+    .child-right {
+        width: 100%;
+        justify-content: center;
+    }
+}
