@@ -1,22 +1,11 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import io from 'socket.io-client';
 import CursorTracker from './components/1_MediaAssets/Styles/CursorTracker';
-import Navbar from './components/Navbar';
 import Dropdown from './components/Dropdown';
 import TopOfBook from './components/TopOfBook';
 import PriceChart from './components/PriceChart';
 import OrderBook from './components/OrderBook';
-
-// import React, { useState, useEffect } from 'react';
-// import io from 'socket.io-client';
-// import CursorTracker from './components/1_MediaAssets/Styles/CursorTracker';
-// import Navbar from './components/Navbar';
-// import Dropdown from './components/Dropdown';
-// import TopOfBook from './components/TopOfBook';
-// import PriceChart from './components/PriceChart';
-// import OrderBook from './components/OrderBook';
 
 const currencyPairs = ['BTC-USD', 'ETH-USD', 'LTC-USD', 'BCH-USD'];
 
@@ -27,25 +16,21 @@ function App() {
   const [orderBook, setOrderBook] = useState({ bids: [], asks: [] });
 
   useEffect(() => {
-    const socket = io('wss://ws-feed.pro.coinbase.com', {
-      transports: ['websocket'],
-    });
+    const socket = new WebSocket('wss://ws-feed.exchange.coinbase.com');
 
-    // Subscribe to channels
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket');
-      socket.send(
-        JSON.stringify({
-          type: 'subscribe',
-          product_ids: [currencyPair],
-          channels: ['ticker', 'level2_batch'],
-        })
-      );
-    });
+    socket.onopen = () => {
+      console.log('WebSocket connection opened');
+      const subscribeMessage = {
+        type: 'subscribe',
+        product_ids: [currencyPair],
+        channels: ['ticker', 'level2_batch'],
+      };
+      socket.send(JSON.stringify(subscribeMessage));
+    };
 
-    // Handle ticker updates
-    socket.on('ticker', (data) => {
-      console.log('Ticker Data:', data);
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
       if (data.type === 'ticker' && data.product_id === currencyPair) {
         setTopOfBook({
           bestBid: { price: data.best_bid, quantity: data.best_bid_size },
@@ -57,21 +42,23 @@ function App() {
           ...prevData,
           { timestamp: new Date(data.time).toLocaleTimeString(), price: data.price }
         ]);
-      }
-    });
-
-    // Handle level2_batch updates
-    socket.on('level2_batch', (data) => {
-      console.log('Level2 Batch Data:', data);
-      if (data.type === 'snapshot' || data.type === 'l2update') {
+      } else if (data.type === 'level2_batch') {
         setOrderBook({
           bids: data.bids || [],
           asks: data.asks || [],
         });
       }
-    });
+    };
 
-    return () => socket.disconnect();
+    socket.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    return () => socket.close();
   }, [currencyPair]);
 
   return (
