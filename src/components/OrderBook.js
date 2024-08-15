@@ -1,43 +1,88 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Dropdown from './Dropdown';
 
 const OrderBook = ({ orderBook }) => {
-  console.log('Order Book Prop:', orderBook);
-  
+  const [priceIncrement, setPriceIncrement] = useState(0.01);
+
+  const formatOrders = (orders) => {
+    const aggregatedOrders = {};
+
+    orders.forEach(({ price, quantity }) => {
+      const roundedPrice = Math.floor(price / priceIncrement) * priceIncrement;
+      if (!aggregatedOrders[roundedPrice]) {
+        aggregatedOrders[roundedPrice] = 0;
+      }
+      aggregatedOrders[roundedPrice] += parseFloat(quantity);
+    });
+
+    return Object.entries(aggregatedOrders).map(([price, quantity]) => ({
+      price: parseFloat(price),
+      quantity: parseFloat(quantity),
+    }));
+  };
+
+  useEffect(() => {
+  }, [priceIncrement, orderBook]); 
+
   if (!orderBook) return <p>Loading Order Book...</p>;
 
-  const { bids, asks } = orderBook;
-
-  const formattedBids = Array.isArray(bids) ? bids.map(({ price, quantity }) => ({ price, quantity })) : [];
-  const formattedAsks = Array.isArray(asks) ? asks.map(({ price, quantity }) => ({ price, quantity })) : [];
+  const formattedBids = Array.isArray(orderBook.bids) ? formatOrders(orderBook.bids) : [];
+  const formattedAsks = Array.isArray(orderBook.asks) ? formatOrders(orderBook.asks) : [];
 
   return (
-    <div>
-      <h3>Order Book</h3>
-      <div>
-        <h4>Bids</h4>
-        {formattedBids.length === 0 ? <p>No bids available</p> : (
-          <div>
-            {formattedBids.map((bid, index) => (
-              <div key={index}>
-                {bid.price} - {bid.quantity}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <div>
-        <h4>Asks</h4>
-        {formattedAsks.length === 0 ? <p>No asks available</p> : (
-          <div>
-            {formattedAsks.map((ask, index) => (
-              <div key={index}>
-                {ask.price} - {ask.quantity}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+    <>
+        <div className="order-book-header"> 
+            <h1 className="top-of-book-title" style={{marginLeft: '10px'}}>Order Book</h1>
+            <Dropdown
+            options={[0.01, 0.05, 0.10].map(val => val.toFixed(2))}
+            selectedOption={priceIncrement.toFixed(2)}
+            onSelect={(value) => setPriceIncrement(parseFloat(value))}
+            />
+        </div>
+
+        <div className="order-book-container">
+        <div className="order-book-sections">
+            <div className="order-book-section">
+            <h4 style={{marginBottom: '5px'}}>Bids</h4>
+            <div className="order-book-table">
+                <div className="order-book-header" style={{backgroundColor: '#142029', paddingLeft: '10px'}}>
+                    <div className="order-book-header-cell">Price ($)</div>
+                    <div className="order-book-header-cell">Quantity</div>
+                </div>
+                <div className="order-book-body">
+                {formattedBids.length === 0 ? <p>No bids available</p> : (
+                    formattedBids.map((bid, index) => (
+                    <div key={index} className="order-book-row">
+                        <div className="order-book-cell order-book-cell-bid" style={{color: '#21c700'}}>{bid.price.toFixed(2)}</div>
+                        <div className="order-book-cell order-book-cell-bid">{bid.quantity.toFixed(2)}</div>
+                    </div>
+                    ))
+                )}
+                </div>
+            </div>
+            </div>
+            <div className="order-book-section">
+            <h4 style={{marginBottom: '5px'}}>Asks</h4>
+            <div className="order-book-table">
+                <div className="order-book-header" style={{backgroundColor: '#142029', paddingLeft: '10px'}}>
+                    <div className="order-book-header-cell">Price ($)</div>
+                    <div className="order-book-header-cell">Quantity</div>
+                </div>
+                <div className="order-book-body">
+                {formattedAsks.length === 0 ? <p>No asks available</p> : (
+                    formattedAsks.map((ask, index) => (
+                    <div key={index} className="order-book-row">
+                        <div className="order-book-cell order-book-cell-ask" style={{color: 'red'}}>{ask.price.toFixed(2)}</div>
+                        <div className="order-book-cell order-book-cell-ask">{ask.quantity.toFixed(2)}</div>
+                    </div>
+                    ))
+                )}
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </>
   );
 };
 

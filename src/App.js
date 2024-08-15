@@ -1,11 +1,11 @@
-import './App.css';
+import './components/1_MediaAssets/Styles/App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import CursorTracker from './components/1_MediaAssets/Styles/CursorTracker';
 import Dropdown from './components/Dropdown';
 import TopOfBook from './components/TopOfBook';
 import PriceChart from './components/PriceChart';
 import OrderBook from './components/OrderBook';
+import LogoCR from './components/1_MediaAssets/BrandAssets/Logo.svg'
 
 const currencyPairs = ['BTC-USD', 'ETH-USD', 'LTC-USD', 'BCH-USD'];
 
@@ -31,7 +31,7 @@ function App() {
     socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log('Received Data:', data); // Log the raw data
+        console.log('Received Data:', data);
 
         if (data.type === 'ticker' && data.product_id === currencyPair) {
           setTopOfBook({
@@ -45,7 +45,7 @@ function App() {
             { timestamp: new Date(data.time).toLocaleTimeString(), price: data.price }
           ]);
         } else if (data.type === 'l2update') {
-          console.log('l2update Data:', data); // Log the l2update data
+          console.log('l2update Data:', data);
           const bids = [];
           const asks = [];
 
@@ -85,17 +85,22 @@ function App() {
 
   return (
     <Router>
-      <CursorTracker />
       <div className="container">
         <Routes>
           <Route path="/" element={
             <div>
-              <Dropdown
-                options={currencyPairs}
-                selectedOption={currencyPair}
-                onSelect={setCurrencyPair}
-              />
-              <div className="widget">
+              <div className='navbar-wrapper'>
+                <div className='navbar'>
+                  <img src={LogoCR} alt='LogoCR' className="logo" />
+                  <Dropdown
+                    options={currencyPairs}
+                    selectedOption={currencyPair}
+                    onSelect={setCurrencyPair}
+                  />
+                </div>
+              </div>
+              
+              <div className="widget" style={{marginTop: '100px'}}>
                 <TopOfBook topOfBook={topOfBook} />
               </div>
               <div className="widget">

@@ -1,12 +1,15 @@
-// src/components/Dropdown.js
 import React from 'react';
-import './1_MediaAssets/Styles/App.css'; 
+import { LuCircleDollarSign } from "react-icons/lu";
 
 const Dropdown = ({ options, selectedOption, onSelect }) => (
-  <select value={selectedOption} onChange={(e) => onSelect(e.target.value)}>
+  <select
+    className="dropdown-select"
+    value={selectedOption}
+    onChange={(e) => onSelect(e.target.value)}
+  >
     {options.map((option) => (
       <option key={option} value={option}>
-        {option}
+        <LuCircleDollarSign className="dropdown-icon" /> {option}
       </option>
     ))}
   </select>

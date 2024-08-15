@@ -3,45 +3,59 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const PriceChart = ({ data }) => {
-  // Check if data is provided and has the expected structure
-  if (!data || data.length === 0) {
-    return <p>No data available</p>;
-  }
-
-  // Prepare the data for bids and asks
-  const bidData = data.map(d => ({
-    x: d.timestamp,
-    y: d.bestBid ? parseFloat(d.bestBid.price) : null,
-  })).filter(d => d.y !== null);
-
-  const askData = data.map(d => ({
-    x: d.timestamp,
-    y: d.bestAsk ? parseFloat(d.bestAsk.price) : null,
-  })).filter(d => d.y !== null);
-
   const chartData = {
+    labels: data.map(d => d.timestamp),
     datasets: [
       {
-        label: 'Best Bid',
-        data: bidData,
-        borderColor: 'rgba(255,99,132,1)', // Red color for bids
-        backgroundColor: 'rgba(255,99,132,0.2)',
+        label: 'Price',
+        data: data.map(d => d.price),
+        borderColor: '#4BC0C0', // Teal color for the line
+        backgroundColor: 'rgba(75,192,192,0.3)', // Light teal background
         fill: true,
-      },
-      {
-        label: 'Best Ask',
-        data: askData,
-        borderColor: 'rgba(75,192,192,1)', // Green color for asks
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        fill: true,
+        pointRadius: 0, // Remove data points for a cleaner look
+        borderWidth: 2,
       },
     ],
   };
 
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: '#fff', // White color for legend labels
+        },
+      },
+      tooltip: {
+        backgroundColor: '#333', // Dark background for tooltips
+        titleColor: '#fff', // White title color for tooltips
+        bodyColor: '#fff', // White body color for tooltips
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#aaa', // Light gray for x-axis labels
+        },
+        grid: {
+          color: '#444', // Dark gray grid lines
+        },
+      },
+      y: {
+        ticks: {
+          color: '#aaa', // Light gray for y-axis labels
+        },
+        grid: {
+          color: '#444', // Dark gray grid lines
+        },
+      },
+    },
+  };
+
   return (
-    <div>
-      <h2>Price Chart</h2>
-      <Line data={chartData} />
+    <div style={{ backgroundColor: '#0e1820', padding: '20px', borderRadius: '8px' }}>
+      <h1 className="top-of-book-title">Price Chart</h1>
+      <Line data={chartData} options={chartOptions} />
     </div>
   );
 };
