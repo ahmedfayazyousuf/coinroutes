@@ -1,6 +1,7 @@
-# Getting Started with CoinRoutes Test App by Ahmed Fayaz Yousuf
+# CoinRoutes Test App by Ahmed Fayaz Yousuf
 
 Date Project Started: 14 August 2024
+
 Date Project Completed: 15 August 2024
 
 ## Steps:
@@ -37,11 +38,14 @@ As mentioned in the previous page, there should be 3 main widgets displaying dat
 a. This widget should simply display the best bid and ask / quantity of the selected currency pair in real time (STATUS: ACHIEVED)
 
 b. BONUS: display the spread and 24 hour volume (STATUS: ACHIEVED)
+
+
 2. Real Time Price Chart
 
 a. Use a charting library to display the current price of the chart (STATUS: ACHIEVED)
 
 b. BONUS: display a historical chart for the selected pair (STATUS: ACHIEVED)
+
 3. Order Book (Ladder)
 
 a. Create a widget that displays an order book and handles real time updates. (STATUS: ACHIEVED)
