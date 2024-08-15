@@ -29,24 +29,46 @@ function App() {
     };
 
     socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      try {
+        const data = JSON.parse(event.data);
+        console.log('Received Data:', data); // Log the raw data
 
-      if (data.type === 'ticker' && data.product_id === currencyPair) {
-        setTopOfBook({
-          bestBid: { price: data.best_bid, quantity: data.best_bid_size },
-          bestAsk: { price: data.best_ask, quantity: data.best_ask_size },
-          spread: (parseFloat(data.best_ask) - parseFloat(data.best_bid)).toFixed(2),
-          volume24h: data.volume_24h,
-        });
-        setPriceData(prevData => [
-          ...prevData,
-          { timestamp: new Date(data.time).toLocaleTimeString(), price: data.price }
-        ]);
-      } else if (data.type === 'level2_batch') {
-        setOrderBook({
-          bids: data.bids || [],
-          asks: data.asks || [],
-        });
+        if (data.type === 'ticker' && data.product_id === currencyPair) {
+          setTopOfBook({
+            bestBid: { price: data.best_bid, quantity: data.best_bid_size },
+            bestAsk: { price: data.best_ask, quantity: data.best_ask_size },
+            spread: (parseFloat(data.best_ask) - parseFloat(data.best_bid)).toFixed(2),
+            volume24h: data.volume_24h,
+          });
+          setPriceData(prevData => [
+            ...prevData,
+            { timestamp: new Date(data.time).toLocaleTimeString(), price: data.price }
+          ]);
+        } else if (data.type === 'l2update') {
+          console.log('l2update Data:', data); // Log the l2update data
+          const bids = [];
+          const asks = [];
+
+          data.changes.forEach(change => {
+            const [side, price, size] = change;
+            const order = { price, quantity: size };
+
+            if (side === 'buy') {
+              bids.push(order);
+            } else if (side === 'sell') {
+              asks.push(order);
+            }
+          });
+
+          setOrderBook({
+            bids,
+            asks,
+          });
+        } else {
+          console.log('Unhandled Data Type:', data);
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
       }
     };
 
