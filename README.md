@@ -33,14 +33,17 @@ Please use the Coinbase API, we are expecting you to make use of the following c
 ## 4. Data display:
 As mentioned in the previous page, there should be 3 main widgets displaying data :
 1. Top of Book
+
 a. This widget should simply display the best bid and ask / quantity of the selected currency pair in real time (STATUS: ACHIEVED)
 
 b. BONUS: display the spread and 24 hour volume (STATUS: ACHIEVED)
 2. Real Time Price Chart
+
 a. Use a charting library to display the current price of the chart (STATUS: ACHIEVED)
 
 b. BONUS: display a historical chart for the selected pair (STATUS: ACHIEVED)
 3. Order Book (Ladder)
+
 a. Create a widget that displays an order book and handles real time updates. (STATUS: ACHIEVED)
 
 b. BONUS: In crypto there are many more price levels than in other asset classes, so as a bonus allow
