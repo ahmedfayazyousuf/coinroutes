@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Getting Started with CoinRoutes Test App by Ahmed Fayaz Yousuf
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Date Project Started: 14 August 2024
+Date Project Completed: 15 August 2024
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
+## Steps:
+1. run `npm i'
+2. run `npm start'
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Task Goals:
 
-### `npm test`
+1. You will be creating a simple trading view application where users can consume realtime information regarding the
+cryptocurrencies they select. It will be composed of 3 main widgets:
+1. Top of Book
+2. Real Time Price Chart
+3. Order book (Ladder)
+STATUS: ACHIEVED
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+2. User inputs:
+The UI should consist of a Drop-down where the user can select a number of currency pairs. For the purposes of
+this example the currencies should be: BTC-USD, ETH-USD, LTC-USD, BCH-USD. These widgets should be
+rendered on screen for each currency pair selected.
+STATUS: ACHIEVED
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Data sources
+Please use the Coinbase API, we are expecting you to make use of the following channels:
+1. ticker
+2. level2_batch
+STATUS: ACHIEVED
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+4. Data display:
+As mentioned in the previous page, there should be 3 main widgets displaying data :
+1. Top of Book
+a. This widget should simply display the best bid and ask / quantity of the selected currency pair in real time (STATUS: ACHIEVED)
+b. BONUS: display the spread and 24 hour volume (STATUS: ACHIEVED)
+2. Real Time Price Chart
+a. Use a charting library to display the current price of the chart (STATUS: ACHIEVED)
+b. BONUS: display a historical chart for the selected pair (STATUS: ACHIEVED)
+3. Order Book (Ladder)
+a. Create a widget that displays an order book and handles real time updates. (STATUS: ACHIEVED)
+b. BONUS: In crypto there are many more price levels than in other asset classes, so as a bonus allow
+aggregating the prices by set price increments.Looking at the picture below (next page), you can see
+that it would allow you to change the increment from 0.01 to 0.05, 0.10, etc... If the aggregation
+was $0.10, you would add up the quantity of each increment and only display one price every $0.10 (STATUS: ACHIEVED)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+5. General Bonuses:
+1. Make the widgets configurable by the user (STATUS: ACHIEVED)
+2. Deploy the application (STATUS: ACHIEVED)
