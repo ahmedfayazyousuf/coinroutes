@@ -9,7 +9,15 @@ import TopOfBook from './components/TopOfBook';
 import PriceChart from './components/PriceChart';
 import OrderBook from './components/OrderBook';
 
-// Replace with your actual currency pair options
+// import React, { useState, useEffect } from 'react';
+// import io from 'socket.io-client';
+// import CursorTracker from './components/1_MediaAssets/Styles/CursorTracker';
+// import Navbar from './components/Navbar';
+// import Dropdown from './components/Dropdown';
+// import TopOfBook from './components/TopOfBook';
+// import PriceChart from './components/PriceChart';
+// import OrderBook from './components/OrderBook';
+
 const currencyPairs = ['BTC-USD', 'ETH-USD', 'LTC-USD', 'BCH-USD'];
 
 function App() {
@@ -19,10 +27,13 @@ function App() {
   const [orderBook, setOrderBook] = useState({ bids: [], asks: [] });
 
   useEffect(() => {
-    const socket = io('https://ws-feed.pro.coinbase.com');
+    const socket = io('wss://ws-feed.exchange.coinbase.com', {
+      transports: ['websocket'],
+    });
 
-    // Subscribe to ticker and level2_batch channels
+    // Subscribe to channels
     socket.on('connect', () => {
+      console.log('Connected to WebSocket');
       socket.send(
         JSON.stringify({
           type: 'subscribe',
@@ -34,6 +45,7 @@ function App() {
 
     // Handle ticker updates
     socket.on('ticker', (data) => {
+      console.log('Ticker Data:', data);
       if (data.type === 'ticker' && data.product_id === currencyPair) {
         setTopOfBook({
           bestBid: { price: data.best_bid, quantity: data.best_bid_size },
@@ -47,14 +59,14 @@ function App() {
         ]);
       }
     });
-    
 
     // Handle level2_batch updates
     socket.on('level2_batch', (data) => {
+      console.log('Level2 Batch Data:', data);
       if (data.type === 'snapshot' || data.type === 'l2update') {
         setOrderBook({
-          bids: data.bids,
-          asks: data.asks,
+          bids: data.bids || [],
+          asks: data.asks || [],
         });
       }
     });
@@ -64,7 +76,6 @@ function App() {
 
   return (
     <Router>
-      {/* <Navbar /> */}
       <CursorTracker />
       <div className="container">
         <Routes>
