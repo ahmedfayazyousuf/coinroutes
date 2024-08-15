@@ -3,7 +3,9 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const PriceChart = ({ data }) => {
+  // eslint-disable-next-line
   const [showBids, setShowBids] = useState(true);
+  // eslint-disable-next-line
   const [showAsks, setShowAsks] = useState(true);
 
   const bidData = data.filter(d => d.type === 'bid');
@@ -70,14 +72,14 @@ const PriceChart = ({ data }) => {
   return (
     <div style={{ backgroundColor: '#0e1820', padding: '20px', borderRadius: '8px' }}>
       <h1 className="top-of-book-title">Price Chart</h1>
-      <div>
+      {/* <div>
         <button onClick={() => setShowBids(!showBids)} style={{ marginRight: '10px' }}>
           Toggle Bids
         </button>
         <button onClick={() => setShowAsks(!showAsks)}>
           Toggle Asks
         </button>
-      </div>
+      </div> */}
       <Line data={chartData} options={chartOptions} />
     </div>
   );
