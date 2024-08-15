@@ -5,7 +5,7 @@ import Dropdown from './components/Dropdown';
 import TopOfBook from './components/TopOfBook';
 import PriceChart from './components/PriceChart';
 import OrderBook from './components/OrderBook';
-import LogoCR from './components/1_MediaAssets/BrandAssets/Logo.svg'
+import LogoCR from './components/1_MediaAssets/BrandAssets/Logo.svg';
 
 const currencyPairs = ['BTC-USD', 'ETH-USD', 'LTC-USD', 'BCH-USD'];
 
@@ -42,16 +42,15 @@ function App() {
           });
           setPriceData(prevData => [
             ...prevData,
-            { timestamp: new Date(data.time).toLocaleTimeString(), price: data.price }
+            { timestamp: new Date(data.time).toLocaleTimeString(), price: data.price, type: 'ask' }
           ]);
         } else if (data.type === 'l2update') {
-          console.log('l2update Data:', data);
           const bids = [];
           const asks = [];
 
           data.changes.forEach(change => {
             const [side, price, size] = change;
-            const order = { price, quantity: size };
+            const order = { price, quantity: size, type: side === 'buy' ? 'bid' : 'ask' };
 
             if (side === 'buy') {
               bids.push(order);
@@ -64,6 +63,20 @@ function App() {
             bids,
             asks,
           });
+
+          setPriceData(prevData => [
+            ...prevData,
+            ...bids.map(bid => ({
+              timestamp: new Date().toLocaleTimeString(),
+              price: bid.price,
+              type: 'bid'
+            })),
+            ...asks.map(ask => ({
+              timestamp: new Date().toLocaleTimeString(),
+              price: ask.price,
+              type: 'ask'
+            })),
+          ]);
         } else {
           console.log('Unhandled Data Type:', data);
         }
