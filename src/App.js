@@ -27,7 +27,7 @@ function App() {
   const [orderBook, setOrderBook] = useState({ bids: [], asks: [] });
 
   useEffect(() => {
-    const socket = io('wss://ws-feed.exchange.coinbase.com', {
+    const socket = io('wss://ws-feed.pro.coinbase.com', {
       transports: ['websocket'],
     });
 
