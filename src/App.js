@@ -1,4 +1,5 @@
 import './components/1_MediaAssets/Styles/App.css';
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dropdown from './components/Dropdown';
@@ -13,6 +14,7 @@ function App() {
   const [currencyPair, setCurrencyPair] = useState('BTC-USD');
   const [topOfBook, setTopOfBook] = useState(null);
   const [priceData, setPriceData] = useState([]);
+  const [historicalData, setHistoricalData] = useState([]);
   const [orderBook, setOrderBook] = useState({ bids: [], asks: [] });
 
   useEffect(() => {
@@ -28,7 +30,7 @@ function App() {
       socket.send(JSON.stringify(subscribeMessage));
     };
 
-    socket.onmessage = (event) => {
+    socket.onmessage = async (event) => {
       try {
         const data = JSON.parse(event.data);
         console.log('Received Data:', data);
@@ -95,6 +97,26 @@ function App() {
 
     return () => socket.close();
   }, [currencyPair]);
+  
+  const fetchHistoricalData = async (currencyPair) => {
+    const response = await fetch(`https://api.exchange.coinbase.com/products/${currencyPair}/candles?granularity=86400`);
+    const data = await response.json();
+    
+    // Format data for the chart
+    return data.map(([time, low, high, open, close, volume]) => ({
+      timestamp: new Date(time * 1000).toLocaleDateString(),
+      price: close
+    }));
+  };
+  
+  useEffect(() => {
+    const fetchHistoricalDataForPair = async () => {
+      const historical = await fetchHistoricalData(currencyPair);
+      setHistoricalData(historical);
+    };
+
+    fetchHistoricalDataForPair();
+  }, [currencyPair]);
 
   return (
     <Router>
@@ -117,7 +139,7 @@ function App() {
                 <TopOfBook topOfBook={topOfBook} />
               </div>
               <div className="widget">
-                <PriceChart data={priceData} />
+                <PriceChart data={priceData} historicalData={historicalData} />
               </div>
               <div className="widget">
                 <OrderBook orderBook={orderBook} />
