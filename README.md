@@ -51,3 +51,4 @@ was $0.10, you would add up the quantity of each increment and only display one 
 ## 5. General Bonuses:
 1. Make the widgets configurable by the user (STATUS: ACHIEVED)
 2. Deploy the application (STATUS: ACHIEVED)
+https://tcoinroutes.vercel.app/
