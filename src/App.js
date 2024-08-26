@@ -1,5 +1,4 @@
 import './components/1_MediaAssets/Styles/App.css';
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dropdown from './components/Dropdown';
@@ -17,7 +16,21 @@ function App() {
   const [historicalData, setHistoricalData] = useState([]);
   const [orderBook, setOrderBook] = useState({ bids: [], asks: [] });
 
+  const resetData = () => {
+    setTopOfBook(null);
+    setPriceData([]);
+    setOrderBook({ bids: [], asks: [] });
+    setHistoricalData([]);
+  };
+
   useEffect(() => {
+    const resetData = () => {
+      setTopOfBook(null);
+      setPriceData([]);
+      setOrderBook({ bids: [], asks: [] });
+      setHistoricalData([]);
+    };
+
     const socket = new WebSocket('wss://ws-feed.exchange.coinbase.com');
 
     socket.onopen = () => {
@@ -95,7 +108,10 @@ function App() {
       console.log('WebSocket connection closed');
     };
 
-    return () => socket.close();
+    return () => {
+      socket.close();
+      resetData();
+    };
   }, [currencyPair]);
   
   const fetchHistoricalData = async (currencyPair) => {
@@ -130,7 +146,10 @@ function App() {
                   <Dropdown
                     options={currencyPairs}
                     selectedOption={currencyPair}
-                    onSelect={setCurrencyPair}
+                    onSelect={(pair) => {
+                      setCurrencyPair(pair);
+                      resetData(); 
+                    }}
                   />
                 </div>
               </div>
